@@ -1,5 +1,5 @@
 # Portafolio
-Portafolio profesional Ludmila Mayra Quiroz - Entrega PFO 1 
+Portafolio profesional Ludmila Quiroz - Entrega PFO 1 
 
 URL VERCEL: 
 
