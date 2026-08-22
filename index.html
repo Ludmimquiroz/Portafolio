@@ -13,34 +13,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('.nav-links a');
 
-      const observerOptions = {
-        root: null,
-        rootMargin: '-20% 0px -60% 0px',
-        threshold: 0
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const currentId = entry.target.getAttribute('id');
-            navLinks.forEach(link => {
-              link.classList.remove('active');
-              if (link.getAttribute('href') === `#${currentId}`) {
-                link.classList.add('active');
-              }
-            });
-          }
-        });
-      }, observerOptions);
-
-      sections.forEach(section => observer.observe(section));
-    });
-  </script>
 <body>
 
   <!-- Header y barra de navegación -->
@@ -160,7 +133,7 @@
         <h2 id="contact-title" class="section-heading">Contacto</h2>
         <div class="section-line" aria-hidden="true"></div>
 
-        <form class="contact-form" action="#" method="POST" aria-label="Formulario de contacto">
+        <form class="contact-form" action="https://formspree.io/f/mrpzdjke" method="POST" aria-label="Formulario de contacto">
           <div class="form-row">
             <div class="form-group">
               <label for="nombre">Nombre Completo *</label>
@@ -184,6 +157,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary btn-submit">ENVIAR MENSAJE</button>
+          <div id="form-status" style="margin-top: 15px; font-weight: bold; text-align: center;"></div>
         </form>
       </div>
     </section>
@@ -200,5 +174,73 @@
     </div>
 </footer>
 
+
+
+
+<!--Parte de JS-->
+<script>
+
+  const form = document.querySelector('.contact-form');
+  const status = document.getElementById('form-status');
+
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault(); 
+    const data = new FormData(event.target);
+    status.textContent = "Enviando...";
+    status.style.color = "#666";
+
+    try {
+      const response = await fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        status.textContent = "¡Gracias por interesarte! Tu mensaje ha sido enviado con éxito.";
+        status.style.color = "#2e7d32"; 
+        form.reset(); 
+      } else {
+        status.textContent = "Ups... Hubo un problema al enviar tu mensaje.";
+        status.style.color = "#d32f2f"; 
+      }
+    } catch (error) {
+      status.textContent = "Error de conexión. Inténtalo de nuevo.";
+      status.style.color = "#d32f2f";
+    }
+  });
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-links a');
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const currentId = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${currentId}`) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => observer.observe(section));
+    });
+  
+</script>
 </body>
 </html>
